@@ -1,3 +1,5 @@
+// https://en.wikipedia.org/wiki/Binary_search_algorithm
+
 def binarySearch(a: Array[Int], p: Int, r: Int, x: Int): Option[Int] = {
   if (p > r) {
     return None
