@@ -1,29 +1,29 @@
 // https://en.wikipedia.org/wiki/Binary_search_algorithm
 
-def binarySearch(a: Array[Int], p: Int, r: Int, x: Int): Option[Int] = {
-  if (p > r) {
+def binarySearch(haystack: Array[Int], needle: Int, minIndex: Int, maxIndex: Int): Option[Int] = {
+  if (minIndex > maxIndex) {
     return None
   }
 
-  val q = (p + r) / 2
-  if (a(q) == x) {
-    return new Some(q)
+  val middleIndex = math.floor((minIndex + maxIndex) / 2).toInt
+  if (haystack(middleIndex) == needle) {
+    return new Some(middleIndex)
   }
 
-  if (a(q) > x) {
-    binarySearch(a, p, q - 1, x)
+  if (haystack(middleIndex) > needle) {
+    binarySearch(haystack, needle, minIndex, middleIndex - 1)
   } else {
-    binarySearch(a, q + 1, r, x)
+    binarySearch(haystack, needle, middleIndex + 1, maxIndex)
   }
 }
 
-def search(a: Array[Int], x: Int): Option[Int] = binarySearch(a, 0, a.length - 1, x)
+def search(haystack: Array[Int], needle: Int): Option[Int] = binarySearch(haystack, needle, 0, haystack.length - 1)
 
-val a = Array[Int](0, 10, 20, 30, 40, 50, 60)
+val haystack = Array[Int](0, 10, 20, 30, 40, 50, 60)
 
 println(
   true
-    && search(a, 0).get == 0
-    && search(a, 20).get == 2
-    && search(a, 60).get == 6
+    && search(haystack, 0).get == 0
+    && search(haystack, 20).get == 2
+    && search(haystack, 60).get == 6
 )
