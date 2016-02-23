@@ -3,12 +3,15 @@
 def insertionSort(array: Array[Int]): Unit = {
   for (index <- 1 to (array.length - 1)) {
     val key = array(index)
-    var j = index - 1
-    while (j > 0 && array(j) > key) {
-      array(j + 1) = array(j)
-      j = j - 1
+    var searchIndex = index - 1
+
+    // move elements greater than key and find new position index for key
+    while (searchIndex > 0 && array(searchIndex) > key) {
+      array(searchIndex + 1) = array(searchIndex)
+      searchIndex = searchIndex - 1
     }
-    array(j + 1) = key
+    
+    array(searchIndex + 1) = key
   }
 }
 
