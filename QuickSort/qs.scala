@@ -9,23 +9,23 @@ def quickSort(array: Array[Int]): Unit = {
   }
 
   def partition(array: Array[Int], startIndex: Int, endIndex: Int): Int = {
-    var leftIndex = startIndex
+    var leftEndIndex = startIndex
     var pivotIndex = endIndex
 
-    for (unknownIndex <- startIndex to (endIndex - 1)) {
+    for (unknownStartIndex <- startIndex to (endIndex - 1)) {
       val pivot = array(pivotIndex)
 
-      if (array(unknownIndex) <= pivot) {
-        swap(array, leftIndex, unknownIndex)
+      if (array(unknownStartIndex) <= pivot) {
+        swap(array, leftEndIndex, unknownStartIndex)
 
-        leftIndex = leftIndex + 1
+        leftEndIndex = leftEndIndex + 1
       }
     }
 
     // pivot now is at the left index
-    swap(array, leftIndex, pivotIndex)
+    swap(array, leftEndIndex, pivotIndex)
 
-    return leftIndex
+    return leftEndIndex
   }
 
   def doQuickSort(array: Array[Int], startIndex: Int, endIndex: Int): Unit = {
