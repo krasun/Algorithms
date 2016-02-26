@@ -9,9 +9,11 @@ def quickSort(array: Array[Int]): Unit = {
   }
 
   def partition(array: Array[Int], startIndex: Int, endIndex: Int): Int = {
+    // index of end of elements of left group (where all elements are less than pivot)
     var leftEndIndex = startIndex
     var pivotIndex = endIndex
 
+    // unknown start index is start index of unknown group
     for (unknownStartIndex <- startIndex to (endIndex - 1)) {
       val pivot = array(pivotIndex)
 
@@ -33,9 +35,12 @@ def quickSort(array: Array[Int]): Unit = {
       return
     }
 
+    // rearrange elements around pivot and return pivot index
     val pivotIndex = partition(array, startIndex, endIndex)
 
+    // sort elements at the left hand of pivot
     doQuickSort(array, startIndex, pivotIndex - 1)
+    // sort elements at the right hand of pivot
     doQuickSort(array, pivotIndex + 1, endIndex)
   }
 
