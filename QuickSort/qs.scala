@@ -2,26 +2,30 @@
 
 def quickSort(array: Array[Int]): Unit = {
 
-  def exchange(array: Array[Int], replaceWithIndex: Int, targetIndex: Int): Unit = {
+  def swap(array: Array[Int], replaceWithIndex: Int, targetIndex: Int): Unit = {
     val temporary = array(targetIndex)
     array(targetIndex) = array(replaceWithIndex)
     array(replaceWithIndex) = temporary
   }
 
   def partition(array: Array[Int], startIndex: Int, endIndex: Int): Int = {
-    var pivotIndex = startIndex
+    var leftIndex = startIndex
+    var pivotIndex = endIndex
 
-    for (index <- startIndex to (endIndex - 1)) {
-      if (array(index) <= array(endIndex)) {
-        exchange(array, pivotIndex, index)
+    for (unknownIndex <- startIndex to (endIndex - 1)) {
+      val pivot = array(pivotIndex)
 
-        pivotIndex = pivotIndex + 1
+      if (array(unknownIndex) <= pivot) {
+        swap(array, leftIndex, unknownIndex)
+
+        leftIndex = leftIndex + 1
       }
     }
 
-    exchange(array, pivotIndex, endIndex)
+    // pivot now is at the left index
+    swap(array, leftIndex, pivotIndex)
 
-    return pivotIndex
+    return leftIndex
   }
 
   def doQuickSort(array: Array[Int], startIndex: Int, endIndex: Int): Unit = {
