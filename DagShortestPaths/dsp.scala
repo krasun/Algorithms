@@ -50,11 +50,11 @@ def dagShortestPaths(graph: Array[Array[Int]], startVertex: Int): (Array[Double]
     (shortest, prev)
   }
 
-  def relax(graph: Array[Array[Int]], u: Int, v: Int, shortest: Array[Double], pred: Array[Option[Int]]) {
+  def relax(graph: Array[Array[Int]], u: Int, v: Int, shortest: Array[Double], prev: Array[Option[Int]]) {
     val weight = graph(u)(v)
     if ((shortest(u) + weight) < shortest(v)) {
       shortest(v) = shortest(u) + weight
-      pred(v) = Some(u)
+      prev(v) = Some(u)
     }
   }
 
