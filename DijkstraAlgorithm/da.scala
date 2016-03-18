@@ -48,6 +48,7 @@ def dijkstraAlgorithm(graph: Array[Array[Int]], startVertex: Int): (Array[Double
   (shortest, prev)
 }
 
+// adjacency matrix, zero is used instead of infinity for readability
 val graph = Array(
   Array(0, 6, 4, 0, 0),
   Array(0, 0, 2, 3, 0),

@@ -69,6 +69,7 @@ def bellmanFord(graph: Array[Array[Int]], startVertex: Int): (Array[Double], Arr
 }
 
 
+// adjacency matrix, zero is used instead of infinity for readability
 val graph = Array(
   Array(0, 6, 7, 0, 0),
   Array(0, 0, 8, 5, -4),

@@ -71,6 +71,7 @@ def dagShortestPaths(graph: Array[Array[Int]], startVertex: Int): (Array[Double]
   (shortest, prev)
 }
 
+// adjacency matrix, zero is used instead of infinity for readability
 val graph = Array(
   Array(0, 5, 3, 0, 0, 0),
   Array(0, 0, 2, 6, 0, 0),
