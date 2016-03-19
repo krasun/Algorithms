@@ -11,19 +11,19 @@ def bellmanFord(graph: Array[Array[Int]], startVertex: Int): (Array[Double], Arr
       shortest(vertex) = if (vertex == startVertex) 0 else Double.PositiveInfinity
     }
 
-    val prev = new Array[Option[Int]](vertices.length)
-    for (vertex <- prev.indices) {
-      prev(vertex) = None
+    val pred = new Array[Option[Int]](vertices.length)
+    for (vertex <- pred.indices) {
+      pred(vertex) = None
     }
 
-    (shortest, prev)
+    (shortest, pred)
   }
 
-  def relax(graph: Array[Array[Int]], u: Int, v: Int, shortest: Array[Double], prev: Array[Option[Int]]) {
+  def relax(graph: Array[Array[Int]], u: Int, v: Int, shortest: Array[Double], pred: Array[Option[Int]]) {
     val weight = graph(u)(v)
     if ((shortest(u) + weight) < shortest(v)) {
       shortest(v) = shortest(u) + weight
-      prev(v) = Some(u)
+      pred(v) = Some(u)
     }
   }
 
@@ -32,7 +32,7 @@ def bellmanFord(graph: Array[Array[Int]], startVertex: Int): (Array[Double], Arr
       yield (u, v)
 
 
-  def findNegativeWeightCycle(graph: Array[Array[Int]], shortest: Array[Double], prev: Array[Option[Int]]): Seq[Int] = {
+  def findNegativeWeightCycle(graph: Array[Array[Int]], shortest: Array[Double], pred: Array[Option[Int]]): Seq[Int] = {
     var cycle = mutable.MutableList[Int]()
 
     for ((u, v) <- edges(graph); if (shortest(u) + graph(u)(v)) < shortest(v)) {
@@ -41,14 +41,14 @@ def bellmanFord(graph: Array[Array[Int]], startVertex: Int): (Array[Double], Arr
       var x = v
       while (! visited(x)) {
         visited(x) = true
-        x = prev(x).get
+        x = pred(x).get
       }
 
-      var vertexInCycle = prev(x).get
+      var vertexInCycle = pred(x).get
       cycle += x
       while (vertexInCycle != x) {
         cycle = mutable.MutableList[Int](vertexInCycle) ++ cycle
-        vertexInCycle = prev(vertexInCycle).get
+        vertexInCycle = pred(vertexInCycle).get
       }
 
       return cycle
@@ -57,15 +57,15 @@ def bellmanFord(graph: Array[Array[Int]], startVertex: Int): (Array[Double], Arr
     return cycle
   }
 
-  val (shortest, prev) = initializePaths(graph.indices, startVertex)
+  val (shortest, pred) = initializePaths(graph.indices, startVertex)
 
   for (i <- 0 until (graph.length - 1)) {
     for ((u, v) <- edges(graph)) {
-      relax(graph, u, v, shortest, prev)
+      relax(graph, u, v, shortest, pred)
     }
   }
 
-  (shortest, prev, findNegativeWeightCycle(graph, shortest, prev))
+  (shortest, pred, findNegativeWeightCycle(graph, shortest, pred))
 }
 
 
@@ -78,17 +78,17 @@ val graph = Array(
   Array(2, 0, 0, 7, 0)
 )
 
-val (shortest, prev, emptyNegativeWeightCycle) = bellmanFord(graph, 0)
+val (shortest, pred, emptyNegativeWeightCycle) = bellmanFord(graph, 0)
 
 println("Results without negative cycle:")
 
 println(shortest.mkString(" "))
-println(prev.mkString(" "))
+println(pred.mkString(" "))
 println(emptyNegativeWeightCycle.mkString(" "))
 
 println(emptyNegativeWeightCycle.isEmpty)
 println(shortest.sameElements(Array(0.0, 2.0, 7.0, 4.0, -2.0)))
-println(prev.sameElements(Array(None, Some(3), Some(0), Some(2), Some(1))))
+println(pred.sameElements(Array(None, Some(3), Some(0), Some(2), Some(1))))
 
 
 val graphWithNegativeCycle = Array(
@@ -97,14 +97,14 @@ val graphWithNegativeCycle = Array(
   Array(1, -1, 0)
 )
 
-val (shortestNegativeCycle, prevNegativeCycle, negativeWeightCycle) = bellmanFord(graphWithNegativeCycle, 0)
+val (shortestNegativeCycle, predNegativeCycle, negativeWeightCycle) = bellmanFord(graphWithNegativeCycle, 0)
 
 println("Results with negative cycle:")
 
 println(shortestNegativeCycle.mkString(" "))
-println(prevNegativeCycle.mkString(" "))
+println(predNegativeCycle.mkString(" "))
 println(negativeWeightCycle.mkString(" "))
 
 println(negativeWeightCycle.isEmpty)
 println(shortestNegativeCycle.sameElements(Array(0.0, 2.0, 7.0, 4.0, -2.0)))
-println(prevNegativeCycle.sameElements(Array(None, Some(3), Some(0), Some(2), Some(1))))
+println(predNegativeCycle.sameElements(Array(None, Some(3), Some(0), Some(2), Some(1))))

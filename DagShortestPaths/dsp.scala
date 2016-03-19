@@ -42,33 +42,33 @@ def dagShortestPaths(graph: Array[Array[Int]], startVertex: Int): (Array[Double]
       shortest(vertex) = if (vertex == startVertex) 0 else Double.PositiveInfinity
     }
 
-    val prev = new Array[Option[Int]](vertices.length)
-    for (vertex <- prev.indices) {
-      prev(vertex) = None
+    val pred = new Array[Option[Int]](vertices.length)
+    for (vertex <- pred.indices) {
+      pred(vertex) = None
     }
 
-    (shortest, prev)
+    (shortest, pred)
   }
 
-  def relax(graph: Array[Array[Int]], u: Int, v: Int, shortest: Array[Double], prev: Array[Option[Int]]) {
+  def relax(graph: Array[Array[Int]], u: Int, v: Int, shortest: Array[Double], pred: Array[Option[Int]]) {
     val weight = graph(u)(v)
     if ((shortest(u) + weight) < shortest(v)) {
       shortest(v) = shortest(u) + weight
-      prev(v) = Some(u)
+      pred(v) = Some(u)
     }
   }
 
   val sorted = topologicalSort(graph)
-  val (shortest, prev) = initializePaths(graph.indices, startVertex)
+  val (shortest, pred) = initializePaths(graph.indices, startVertex)
 
 
   for (u <- sorted) {
     for (v <- graph(u).indices if 0 != graph(u)(v)) {
-      relax(graph, u, v, shortest, prev)
+      relax(graph, u, v, shortest, pred)
     }
   }
 
-  (shortest, prev)
+  (shortest, pred)
 }
 
 // adjacency matrix, zero is used instead of infinity for readability
@@ -81,10 +81,10 @@ val graph = Array(
   Array(0, 0, 0, 0, 0, 0)
 )
 
-val (shortest, prev) = dagShortestPaths(graph, 1)
+val (shortest, pred) = dagShortestPaths(graph, 1)
 
 println(shortest.mkString(" "))
-println(prev.mkString(" "))
+println(pred.mkString(" "))
 
 println(shortest.sameElements(Array(Double.PositiveInfinity, 0.0, 2.0, 6.0, 5.0, 3.0)))
-println(prev.sameElements(Array(None, None, Some(1), Some(1), Some(3), Some(4))))
+println(pred.sameElements(Array(None, None, Some(1), Some(1), Some(3), Some(4))))
